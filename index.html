@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luciano Carraro | Personal Trainer</title>
+    <meta name="description" content="Personal Trainer Luciano Carraro - Criador da metodologia SUA MELHOR VERSÃO. Consultoria online e presencial em Curitiba." />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                dark: '#050505',
+                card: '#121212',
+                gray: '#1f1f1f',
+                green: '#22c55e',
+                neon: '#4ade80', 
+                accent: '#16a34a',
+              }
+            },
+            animation: {
+              'blob': 'blob 7s infinite',
+              'shimmer': 'shimmer 1.5s infinite',
+            },
+            keyframes: {
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+              },
+              shimmer: {
+                '100%': { transform: 'translateX(100%)' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #050505;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
+      
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #0a0a0a; }
+      ::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #4ade80; }
+
+      /* Gradient Text */
+      .gradient-text-animated {
+        background: linear-gradient(to right, #22c55e, #4ade80, #22c55e);
+        background-size: 200% auto;
+        color: #000;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 3s linear infinite;
+      }
+      
+      @keyframes shine {
+        to { background-position: 200% center; }
+      }
+
+      .glass-card {
+        background: rgba(18, 18, 18, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      
+      .glass-card:hover {
+        border-color: rgba(34, 197, 94, 0.5);
+        box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+      }
+
+      /* Scroll Reveal Animation CSS */
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+      
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* FAQ Animation */
+      details > summary { list-style: none; }
+      details > summary::-webkit-details-marker { display: none; }
+      
+      details[open] summary ~ * {
+        animation: sweep .3s ease-in-out;
+      }
+
+      @keyframes sweep {
+        0%    {opacity: 0; transform: translateY(-10px)}
+        100%  {opacity: 1; transform: translateY(0)}
+      }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav className="fixed w-full z-50 bg-brand-dark/95 backdrop-blur-md border-b border-white/10" class="fixed w-full z-50 bg-[#050505]/95 backdrop-blur-md border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <div class="flex-shrink-0 cursor-pointer" onclick="window.scrollTo(0,0)">
+            <h1 class="text-2xl font-black italic tracking-tighter text-white">
+              LUCIANO <span class="text-brand-green">CARRARO</span>
+            </h1>
+          </div>
+          
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-8">
+              <a href="#metodologia" class="text-gray-300 hover:text-brand-neon px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Metodologia</a>
+              <a href="#planos" class="text-gray-300 hover:text-brand-neon px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Planos</a>
+              <a href="#resultados" class="text-gray-300 hover:text-brand-neon px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Resultados</a>
+              <a href="#faq" class="text-gray-300 hover:text-brand-neon px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">FAQ</a>
+              <a href="#contato" class="text-gray-300 hover:text-brand-neon px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Contato</a>
+              <a href="#planos" class="bg-brand-green hover:bg-brand-neon text-black px-5 py-2 rounded-full font-bold text-sm transition-all duration-300 transform hover:scale-105">COMEÇAR AGORA</a>
+            </div>
+          </div>
+          
+          <div class="-mr-2 flex md:hidden">
+            <button id="menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+              <i data-lucide="menu"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden bg-[#050505] border-b border-gray-800">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a href="#metodologia" class="mobile-link text-gray-300 hover:text-brand-neon block px-3 py-2 rounded-md text-base font-medium">Metodologia</a>
+          <a href="#planos" class="mobile-link text-gray-300 hover:text-brand-neon block px-3 py-2 rounded-md text-base font-medium">Planos</a>
+          <a href="#resultados" class="mobile-link text-gray-300 hover:text-brand-neon block px-3 py-2 rounded-md text-base font-medium">Resultados</a>
+          <a href="#faq" class="mobile-link text-gray-300 hover:text-brand-neon block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
+          <a href="#contato" class="mobile-link text-gray-300 hover:text-brand-neon block px-3 py-2 rounded-md text-base font-medium">Contato</a>
+          <a href="#planos" class="mobile-link w-full text-center block bg-brand-green text-black px-3 py-3 rounded-md font-bold mt-4">COMEÇAR AGORA</a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden bg-brand-dark">
+            <!-- Dynamic Background Elements -->
+            <div class="absolute top-0 -left-4 w-72 h-72 bg-brand-green/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+            <div class="absolute top-0 -right-4 w-72 h-72 bg-brand-neon/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" style="animation-delay: 2s;"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-brand-accent/30 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" style="animation-delay: 4s;"></div>
+
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop" alt="Treino Personal" class="w-full h-full object-cover opacity-30 grayscale hover:scale-105 transition-transform duration-[20s]" />
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/90 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-brand-dark/90 via-transparent to-brand-dark/50"></div>
+            </div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+                    <div class="reveal">
+                        <div class="inline-flex items-center space-x-2 border border-brand-green/30 bg-brand-green/10 rounded-full px-4 py-1 mb-6 backdrop-blur-sm">
+                            <span class="w-2 h-2 rounded-full bg-brand-neon animate-pulse"></span>
+                            <span class="text-brand-neon text-sm font-bold tracking-widest uppercase">Personal Trainer | CREF 035140</span>
+                        </div>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 100ms;">
+                        <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.9] mb-6 tracking-tighter">
+                            CONSTRUA A <br />
+                            <span class="gradient-text-animated">SUA MELHOR</span><br />
+                            <span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500">VERSÃO</span>
+                        </h1>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <p class="text-lg sm:text-xl text-gray-400 mb-8 leading-relaxed max-w-2xl font-light">
+                            Uma metodologia exclusiva para quem cansou de treinar sem ver resultados. 
+                            Una <span class="text-white font-semibold">ciência</span>, <span class="text-white font-semibold">técnica</span> e <span class="text-white font-semibold">motivação</span>.
+                        </p>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 300ms;">
+                        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                            <a href="#planos" class="group relative px-8 py-4 bg-brand-green text-black font-black text-lg rounded-full overflow-hidden transition-all hover:shadow-[0_0_30px_rgba(34,197,94,0.4)]">
+                                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                                <span class="relative flex items-center justify-center">
+                                    COMEÇAR AGORA
+                                    <i data-lucide="arrow-right" class="ml-2 group-hover:translate-x-1 transition-transform"></i>
+                                </span>
+                            </a>
+                            <a href="#contato" class="px-8 py-4 bg-white/5 border border-white/10 backdrop-blur-sm text-white font-bold text-lg rounded-full hover:bg-white hover:text-black transition-all duration-300">
+                                FALE COMIGO
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce opacity-50">
+                <i data-lucide="chevron-down" class="text-white w-8 h-8"></i>
+            </div>
+        </section>
+
+        <!-- Features / Metodologia -->
+        <section id="metodologia" class="py-32 bg-brand-dark relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-20 reveal">
+                    <h2 class="text-sm font-bold text-brand-green tracking-[0.2em] uppercase mb-3">O Processo</h2>
+                    <h2 class="text-4xl md:text-6xl font-black text-white mb-6">
+                        METODOLOGIA <br /><span class="gradient-text-animated">SUA MELHOR VERSÃO</span>
+                    </h2>
+                    <div class="w-24 h-1 bg-brand-green mx-auto rounded-full mb-6"></div>
+                    <p class="text-gray-400 max-w-2xl mx-auto text-lg">
+                        Um sistema validado de 4 pilares para transformar seu corpo e sua mente de forma definitiva.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Step 1 -->
+                    <div class="reveal" style="transition-delay: 0ms;">
+                        <div class="h-full glass-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-white group-hover:text-brand-green transition-colors">1</div>
+                            <div class="bg-brand-card w-16 h-16 rounded-2xl flex items-center justify-center text-brand-green mb-8 shadow-lg group-hover:scale-110 group-hover:bg-brand-green group-hover:text-black transition-all duration-300">
+                                <i data-lucide="clipboard-check" class="w-10 h-10"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-4 group-hover:text-brand-neon transition-colors">Avaliação e Planejamento</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">Análise profunda do seu perfil, histórico e objetivos para traçar a rota ideal.</p>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="reveal" style="transition-delay: 100ms;">
+                        <div class="h-full glass-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-white group-hover:text-brand-green transition-colors">2</div>
+                            <div class="bg-brand-card w-16 h-16 rounded-2xl flex items-center justify-center text-brand-green mb-8 shadow-lg group-hover:scale-110 group-hover:bg-brand-green group-hover:text-black transition-all duration-300">
+                                <i data-lucide="dumbbell" class="w-10 h-10"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-4 group-hover:text-brand-neon transition-colors">Execução e Consistência</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">Implementação do treino com foco na técnica correta e criação de hábitos duradouros.</p>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <div class="h-full glass-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-white group-hover:text-brand-green transition-colors">3</div>
+                            <div class="bg-brand-card w-16 h-16 rounded-2xl flex items-center justify-center text-brand-green mb-8 shadow-lg group-hover:scale-110 group-hover:bg-brand-green group-hover:text-black transition-all duration-300">
+                                <i data-lucide="bar-chart-3" class="w-10 h-10"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-4 group-hover:text-brand-neon transition-colors">Metrificação de Resultados</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">Acompanhamento constante da evolução através de bioimpedância e feedbacks.</p>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="reveal" style="transition-delay: 300ms;">
+                        <div class="h-full glass-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-white group-hover:text-brand-green transition-colors">4</div>
+                            <div class="bg-brand-card w-16 h-16 rounded-2xl flex items-center justify-center text-brand-green mb-8 shadow-lg group-hover:scale-110 group-hover:bg-brand-green group-hover:text-black transition-all duration-300">
+                                <i data-lucide="target" class="w-10 h-10"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-4 group-hover:text-brand-neon transition-colors">Novas Metas e Treinos</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">Ajustes estratégicos para quebrar platôs e buscar o próximo nível do seu físico.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bonuses Section -->
+        <section class="py-24 bg-brand-card relative">
+            <div class="absolute inset-0 bg-brand-green/5 skew-y-3 transform origin-top-left scale-110"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="flex flex-col lg:flex-row items-center gap-16">
+                    <div class="lg:w-1/2 reveal">
+                        <div class="inline-block px-3 py-1 bg-brand-green/10 rounded-full border border-brand-green/20 text-brand-green text-xs font-bold uppercase tracking-wider mb-4">
+                            Benefícios Premium
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-black text-white mb-8 leading-tight">
+                            TUDO O QUE VOCÊ PRECISA <br />
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-green to-white">EM UM SÓ LUGAR</span>
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 bg-brand-dark/50 p-4 rounded-xl border border-white/5 hover:border-brand-green/30 transition-colors">
+                                <div class="flex-shrink-0 bg-brand-green/10 p-2 rounded-full text-brand-green"><i data-lucide="check-circle-2" class="w-5 h-5"></i></div>
+                                <span class="text-gray-200 font-medium">App Exclusivo para acompanhar treinos</span>
+                            </div>
+                            <div class="flex items-center space-x-4 bg-brand-dark/50 p-4 rounded-xl border border-white/5 hover:border-brand-green/30 transition-colors">
+                                <div class="flex-shrink-0 bg-brand-green/10 p-2 rounded-full text-brand-green"><i data-lucide="check-circle-2" class="w-5 h-5"></i></div>
+                                <span class="text-gray-200 font-medium">Suporte direto por WhatsApp</span>
+                            </div>
+                            <div class="flex items-center space-x-4 bg-brand-dark/50 p-4 rounded-xl border border-white/5 hover:border-brand-green/30 transition-colors">
+                                <div class="flex-shrink-0 bg-brand-green/10 p-2 rounded-full text-brand-green"><i data-lucide="check-circle-2" class="w-5 h-5"></i></div>
+                                <span class="text-gray-200 font-medium">Treino em casa (Opção Personal em Domicílio)</span>
+                            </div>
+                            <div class="flex items-center space-x-4 bg-brand-dark/50 p-4 rounded-xl border border-white/5 hover:border-brand-green/30 transition-colors">
+                                <div class="flex-shrink-0 bg-brand-green/10 p-2 rounded-full text-brand-green"><i data-lucide="check-circle-2" class="w-5 h-5"></i></div>
+                                <span class="text-gray-200 font-medium">Avaliação por bioimpedância</span>
+                            </div>
+                            <div class="flex items-center space-x-4 bg-brand-dark/50 p-4 rounded-xl border border-white/5 hover:border-brand-green/30 transition-colors">
+                                <div class="flex-shrink-0 bg-brand-green/10 p-2 rounded-full text-brand-green"><i data-lucide="check-circle-2" class="w-5 h-5"></i></div>
+                                <span class="text-gray-200 font-medium">Cronograma detalhado em PDF</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2 relative reveal" style="transition-delay: 200ms;">
+                        <div class="relative z-10">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-brand-green to-brand-neon rounded-2xl blur opacity-30"></div>
+                            <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop" alt="App de Treino" class="relative rounded-2xl shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-700" />
+                            
+                            <!-- Floating badge -->
+                            <div class="absolute -bottom-6 -right-6 bg-brand-dark border border-brand-green/30 p-4 rounded-xl shadow-xl backdrop-blur-md">
+                                <div class="flex items-center gap-3">
+                                   <div class="bg-green-500 w-3 h-3 rounded-full animate-pulse"></div>
+                                   <span class="font-bold text-white text-sm">App Disponível 24h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="planos" class="py-32 bg-brand-dark relative overflow-hidden">
+            <div class="absolute top-1/4 left-0 w-full h-[500px] bg-brand-green/5 -skew-y-6 transform origin-left"></div>
+            <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-green/10 rounded-full filter blur-[120px] opacity-30"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-20 reveal">
+                    <h2 class="text-4xl md:text-6xl font-black text-white mb-6">
+                        COMECE SUA <span class="gradient-text-animated">JORNADA</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg">Escolha a estratégia ideal para o seu momento atual.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <!-- Plan 1 -->
+                    <div class="reveal" style="transition-delay: 0ms;">
+                        <div class="relative rounded-3xl p-1 transition-all duration-300 h-full bg-zinc-800">
+                            <div class="h-full rounded-[22px] p-8 flex flex-col bg-brand-card">
+                                <div class="mb-8">
+                                    <h3 class="text-2xl font-bold text-white mb-2">Consultoria Online</h3>
+                                    <p class="text-gray-500 text-sm mb-6 h-10">O plano ideal para quem busca flexibilidade e autonomia com orientação profissional.</p>
+                                    <div class="flex items-baseline">
+                                        <span class="text-5xl font-black text-brand-neon tracking-tighter">R$ 99</span>
+                                        <span class="text-gray-400 ml-2 font-medium">/mês</span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <div class="w-full h-px bg-white/10 mb-8"></div>
+                                    <ul class="space-y-5 mb-8">
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-gray-800 text-gray-400"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Treinos personalizados via App</span></li>
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-gray-800 text-gray-400"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Suporte via WhatsApp</span></li>
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-gray-800 text-gray-400"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Análise de execução de movimento por vídeo</span></li>
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-gray-800 text-gray-400"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Ajustes mensais no plano</span></li>
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-gray-800 text-gray-400"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Acesso à área de conteúdo</span></li>
+                                    </ul>
+                                </div>
+                                <a href="#contato" class="w-full block text-center py-4 rounded-xl font-bold tracking-wide transition-all duration-300 bg-white/5 text-white border border-white/10 hover:bg-white hover:text-black hover:border-white">
+                                    QUERO O PLANO ONLINE
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Plan 2 (Highlighted) -->
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <div class="relative rounded-3xl p-1 transition-all duration-300 h-full bg-gradient-to-b from-brand-green to-brand-dark shadow-[0_0_50px_rgba(34,197,94,0.15)]">
+                            <div class="h-full rounded-[22px] p-8 flex flex-col bg-brand-dark">
+                                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                                    <div class="bg-brand-green text-black text-xs font-black px-6 py-2 rounded-full uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-green-500/20">
+                                        <i data-lucide="star" class="w-3 h-3 fill-black"></i> Mais Popular
+                                    </div>
+                                </div>
+                                <div class="mb-8 mt-2">
+                                    <h3 class="text-2xl font-bold text-white mb-2">Treinamento Presencial</h3>
+                                    <p class="text-gray-500 text-sm mb-6 h-10">O plano ideal para quem busca acompanhamento próximo e correção em tempo real.</p>
+                                    <div class="flex items-baseline">
+                                        <span class="text-4xl font-black text-brand-neon tracking-tighter">Sob Consulta</span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <div class="w-full h-px bg-white/10 mb-8"></div>
+                                    <ul class="space-y-5 mb-8">
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-brand-green/20 text-brand-green"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Atendimento exclusivo em Curitiba/PR</span></li>
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-brand-green/20 text-brand-green"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Correção postural em tempo real</span></li>
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-brand-green/20 text-brand-green"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Motivação e intensidade garantida</span></li>
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-brand-green/20 text-brand-green"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Planos Mensal, Trimestral e Semestral</span></li>
+                                        <li class="flex items-start"><div class="mr-3 p-1 rounded-full bg-brand-green/20 text-brand-green"><i data-lucide="check" class="w-3.5 h-3.5" stroke-width="3"></i></div><span class="text-gray-300 text-sm font-medium">Avaliação física presencial completa</span></li>
+                                    </ul>
+                                </div>
+                                <a href="#contato" class="w-full block text-center py-4 rounded-xl font-bold tracking-wide transition-all duration-300 bg-brand-green text-black hover:bg-brand-neon hover:shadow-[0_0_20px_rgba(74,222,128,0.4)] hover:scale-[1.02]">
+                                    AGENDAR AVALIAÇÃO
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof & FAQ -->
+        <section id="resultados" class="bg-brand-dark py-24 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="reveal w-full text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-black text-white mb-6">
+                        QUEM JÁ ALCANÇOU A <br />
+                        <span class="gradient-text-animated">MELHOR VERSÃO</span>
+                    </h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="reveal" style="transition-delay: 0ms;">
+                        <div class="bg-brand-card p-8 rounded-3xl border border-white/5 relative group hover:border-brand-green/30 transition-all duration-300 hover:-translate-y-2">
+                            <div class="absolute -top-6 left-8 bg-brand-dark p-2 rounded-full border border-brand-green/20">
+                                <i data-lucide="quote" class="text-brand-green fill-brand-green/20 w-8 h-8"></i>
+                            </div>
+                            <div class="mt-6 flex flex-col items-center text-center">
+                                <p class="text-gray-300 italic mb-6">"Resultados incríveis. A metodologia mudou minha forma de enxergar o treino."</p>
+                                <div class="w-full h-px bg-white/5 mb-6"></div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="relative">
+                                        <img src="https://picsum.photos/id/1005/150/150" alt="Ricardo Silva" class="w-14 h-14 rounded-full border-2 border-brand-green object-cover" />
+                                        <div class="absolute -bottom-1 -right-1 bg-brand-green text-black p-0.5 rounded-full flex justify-center items-center"><i data-lucide="star" class="w-2.5 h-2.5 fill-black"></i></div>
+                                    </div>
+                                    <div class="text-left">
+                                        <h4 class="text-white font-bold text-lg">Ricardo Silva</h4>
+                                        <span class="text-brand-neon text-sm font-semibold bg-brand-green/10 px-2 py-0.5 rounded">-15kg em 6 meses</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="reveal" style="transition-delay: 100ms;">
+                        <div class="bg-brand-card p-8 rounded-3xl border border-white/5 relative group hover:border-brand-green/30 transition-all duration-300 hover:-translate-y-2">
+                            <div class="absolute -top-6 left-8 bg-brand-dark p-2 rounded-full border border-brand-green/20">
+                                <i data-lucide="quote" class="text-brand-green fill-brand-green/20 w-8 h-8"></i>
+                            </div>
+                            <div class="mt-6 flex flex-col items-center text-center">
+                                <p class="text-gray-300 italic mb-6">"Consegui a definição que buscava há anos. Treinos intensos e direto ao ponto."</p>
+                                <div class="w-full h-px bg-white/5 mb-6"></div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="relative">
+                                        <img src="https://picsum.photos/id/338/150/150" alt="Amanda Costa" class="w-14 h-14 rounded-full border-2 border-brand-green object-cover" />
+                                        <div class="absolute -bottom-1 -right-1 bg-brand-green text-black p-0.5 rounded-full flex justify-center items-center"><i data-lucide="star" class="w-2.5 h-2.5 fill-black"></i></div>
+                                    </div>
+                                    <div class="text-left">
+                                        <h4 class="text-white font-bold text-lg">Amanda Costa</h4>
+                                        <span class="text-brand-neon text-sm font-semibold bg-brand-green/10 px-2 py-0.5 rounded">Definição muscular</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <div class="bg-brand-card p-8 rounded-3xl border border-white/5 relative group hover:border-brand-green/30 transition-all duration-300 hover:-translate-y-2">
+                            <div class="absolute -top-6 left-8 bg-brand-dark p-2 rounded-full border border-brand-green/20">
+                                <i data-lucide="quote" class="text-brand-green fill-brand-green/20 w-8 h-8"></i>
+                            </div>
+                            <div class="mt-6 flex flex-col items-center text-center">
+                                <p class="text-gray-300 italic mb-6">"Recuperei minha confiança e melhorei minha postura 100% com o presencial."</p>
+                                <div class="w-full h-px bg-white/5 mb-6"></div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="relative">
+                                        <img src="https://picsum.photos/id/1012/150/150" alt="João Pedro" class="w-14 h-14 rounded-full border-2 border-brand-green object-cover" />
+                                        <div class="absolute -bottom-1 -right-1 bg-brand-green text-black p-0.5 rounded-full flex justify-center items-center"><i data-lucide="star" class="w-2.5 h-2.5 fill-black"></i></div>
+                                    </div>
+                                    <div class="text-left">
+                                        <h4 class="text-white font-bold text-lg">João Pedro</h4>
+                                        <span class="text-brand-neon text-sm font-semibold bg-brand-green/10 px-2 py-0.5 rounded">Correção Postural</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-24 bg-brand-card/30 border-t border-white/5">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="reveal w-full text-center mb-12">
+                    <h2 class="text-3xl font-black text-white">DÚVIDAS FREQUENTES</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="reveal" style="transition-delay: 0ms;">
+                        <details class="group rounded-2xl overflow-hidden transition-all duration-300 border bg-brand-dark border-white/5 open:bg-brand-card open:border-brand-green/50 open:shadow-lg">
+                            <summary class="w-full px-6 py-5 text-left flex justify-between items-center cursor-pointer focus:outline-none list-none">
+                                <span class="font-bold text-lg text-white group-open:text-brand-green transition-colors">A consultoria online serve para iniciantes?</span>
+                                <span class="group-open:hidden text-gray-500"><i data-lucide="plus"></i></span>
+                                <span class="hidden group-open:block text-brand-green"><i data-lucide="minus"></i></span>
+                            </summary>
+                            <div class="px-6 pb-5 text-gray-400 leading-relaxed">
+                                Sim! O treino é montado de acordo com seu nível, do zero ao avançado, com vídeos explicativos para cada exercício.
+                            </div>
+                        </details>
+                    </div>
+                    <!-- FAQ Item 2 -->
+                    <div class="reveal" style="transition-delay: 50ms;">
+                        <details class="group rounded-2xl overflow-hidden transition-all duration-300 border bg-brand-dark border-white/5 open:bg-brand-card open:border-brand-green/50 open:shadow-lg">
+                            <summary class="w-full px-6 py-5 text-left flex justify-between items-center cursor-pointer focus:outline-none list-none">
+                                <span class="font-bold text-lg text-white group-open:text-brand-green transition-colors">Onde são os treinos presenciais?</span>
+                                <span class="group-open:hidden text-gray-500"><i data-lucide="plus"></i></span>
+                                <span class="hidden group-open:block text-brand-green"><i data-lucide="minus"></i></span>
+                            </summary>
+                            <div class="px-6 pb-5 text-gray-400 leading-relaxed">
+                                Os treinos presenciais são realizados em Curitiba/PR. Entre em contato para verificar a disponibilidade de academias parceiras ou atendimento domiciliar.
+                            </div>
+                        </details>
+                    </div>
+                     <!-- FAQ Item 3 -->
+                     <div class="reveal" style="transition-delay: 100ms;">
+                        <details class="group rounded-2xl overflow-hidden transition-all duration-300 border bg-brand-dark border-white/5 open:bg-brand-card open:border-brand-green/50 open:shadow-lg">
+                            <summary class="w-full px-6 py-5 text-left flex justify-between items-center cursor-pointer focus:outline-none list-none">
+                                <span class="font-bold text-lg text-white group-open:text-brand-green transition-colors">Como funciona o suporte?</span>
+                                <span class="group-open:hidden text-gray-500"><i data-lucide="plus"></i></span>
+                                <span class="hidden group-open:block text-brand-green"><i data-lucide="minus"></i></span>
+                            </summary>
+                            <div class="px-6 pb-5 text-gray-400 leading-relaxed">
+                                Você terá acesso direto ao meu WhatsApp para tirar dúvidas sobre exercícios, dores ou adaptações necessárias a qualquer momento.
+                            </div>
+                        </details>
+                    </div>
+                     <!-- FAQ Item 4 -->
+                     <div class="reveal" style="transition-delay: 150ms;">
+                        <details class="group rounded-2xl overflow-hidden transition-all duration-300 border bg-brand-dark border-white/5 open:bg-brand-card open:border-brand-green/50 open:shadow-lg">
+                            <summary class="w-full px-6 py-5 text-left flex justify-between items-center cursor-pointer focus:outline-none list-none">
+                                <span class="font-bold text-lg text-white group-open:text-brand-green transition-colors">Qual a forma de pagamento?</span>
+                                <span class="group-open:hidden text-gray-500"><i data-lucide="plus"></i></span>
+                                <span class="hidden group-open:block text-brand-green"><i data-lucide="minus"></i></span>
+                            </summary>
+                            <div class="px-6 pb-5 text-gray-400 leading-relaxed">
+                                Aceitamos cartão de crédito (recorrência), PIX e boleto bancário.
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contato" class="py-24 bg-brand-dark relative overflow-hidden">
+            <div class="absolute -left-20 -bottom-20 w-96 h-96 bg-brand-green/10 rounded-full filter blur-[100px]"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    
+                    <div class="reveal">
+                        <h2 class="text-5xl md:text-6xl font-black text-white mb-6">
+                            VAMOS <span class="text-brand-green">INICIAR?</span>
+                        </h2>
+                        <p class="text-gray-400 text-lg mb-10 leading-relaxed">
+                            Você está a um passo da sua melhor versão. Preencha o formulário ou me chame diretamente no WhatsApp.
+                            <br /><br />
+                            <span class="text-brand-green font-bold">Respondo em até 2 horas.</span>
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <a href="#" class="flex items-center p-4 bg-brand-card rounded-2xl border border-white/5 hover:border-brand-green transition-all group hover:-translate-y-1">
+                                <div class="bg-brand-green/10 p-3 rounded-xl mr-4 group-hover:bg-brand-green group-hover:text-black transition-colors text-brand-green">
+                                    <i data-lucide="instagram" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Instagram</p>
+                                    <p class="text-white font-bold">@lucianocarraro</p>
+                                </div>
+                            </a>
+                            
+                            <a href="#" class="flex items-center p-4 bg-brand-card rounded-2xl border border-white/5 hover:border-brand-green transition-all group hover:-translate-y-1">
+                                <div class="bg-brand-green/10 p-3 rounded-xl mr-4 group-hover:bg-brand-green group-hover:text-black transition-colors text-brand-green">
+                                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">WhatsApp</p>
+                                    <p class="text-white font-bold">(41) 99999-9999</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="flex items-center space-x-4 text-gray-500 text-sm">
+                           <div class="flex items-center"><i data-lucide="map-pin" class="mr-2 text-brand-green w-4 h-4"></i> Curitiba, PR</div>
+                           <div class="flex items-center"><i data-lucide="mail" class="mr-2 text-brand-green w-4 h-4"></i> contato@lucianocarraro.com</div>
+                        </div>
+                    </div>
+
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <div class="glass-card p-8 rounded-3xl relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-green to-transparent"></div>
+                            <form id="contact-form" class="space-y-6 relative z-10">
+                                <div class="group">
+                                    <label htmlFor="name" class="block text-sm font-bold text-gray-400 mb-2 group-focus-within:text-brand-green transition-colors">NOME COMPLETO</label>
+                                    <input type="text" id="name" name="name" required class="w-full bg-brand-dark/50 border border-gray-700 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all placeholder-gray-600" placeholder="Digite seu nome..." />
+                                </div>
+                                
+                                <div class="group">
+                                    <label htmlFor="email" class="block text-sm font-bold text-gray-400 mb-2 group-focus-within:text-brand-green transition-colors">E-MAIL</label>
+                                    <input type="email" id="email" name="email" required class="w-full bg-brand-dark/50 border border-gray-700 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all placeholder-gray-600" placeholder="seu@email.com" />
+                                </div>
+                                
+                                <div class="group">
+                                    <label htmlFor="message" class="block text-sm font-bold text-gray-400 mb-2 group-focus-within:text-brand-green transition-colors">MENSAGEM</label>
+                                    <textarea id="message" name="message" required rows="4" class="w-full bg-brand-dark/50 border border-gray-700 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all placeholder-gray-600" placeholder="Quais seus objetivos?"></textarea>
+                                </div>
+
+                                <button type="submit" class="w-full bg-white text-black font-black text-lg py-4 rounded-xl flex items-center justify-center hover:bg-brand-green transition-all duration-300 shadow-lg hover:shadow-green-500/20">
+                                    ENVIAR MENSAGEM
+                                    <i data-lucide="send" class="ml-2 w-5 h-5"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+      
+    <footer class="bg-black py-8 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+            &copy; <span id="year"></span> Luciano Carraro. Todos os direitos reservados.
+            </p>
+            <p class="text-gray-600 text-xs mt-2">
+            CREF: 035140 | Curitiba - PR
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Update Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Form Submission Mock
+        const form = document.getElementById('contact-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            alert(`Obrigado, ${name}! Sua mensagem foi recebida. Entraremos em contato em até 2 horas.`);
+            form.reset();
+        });
+
+        // Scroll Reveal Animation (Intersection Observer)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Run once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
