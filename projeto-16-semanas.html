@@ -600,63 +600,67 @@
             }
         };
 
-        function showWorkout(dayId) {
-            document.querySelectorAll('.workout-tab').forEach(tab => {
-                tab.className = "w-full text-left px-4 py-3 rounded-lg font-medium text-slate-600 hover:bg-slate-50 transition-all workout-tab";
-            });
-            const activeTab = document.getElementById(`tab-${dayId}`);
-            activeTab.className = "w-full text-left px-4 py-3 rounded-lg font-medium text-brand-700 bg-brand-50 border border-brand-200 transition-all workout-tab";
+        function showWorkout(letter) {
+            const contentDiv = document.getElementById('treino');
+            let htmlStr = '';
 
-            const data = workoutsData[dayId];
-            const contentDiv = document.getElementById('workout-content');
-
-            contentDiv.classList.remove('fade-in');
-            void contentDiv.offsetWidth;
-
-            let htmlStr = `
-                <div class="mb-6 pb-4 border-b border-slate-100">
-                    <div class="flex items-center gap-3 mb-2">
-                        <span class="text-3xl">${data.icon}</span>
-                        <h3 class="text-2xl font-bold text-slate-800">${data.title}</h3>
-                    </div>
-                    <p class="text-sm font-medium text-brand-600 italic">👉 Por quê: ${data.why}</p>
-                </div>
-            `;
-
-            if (data.warning) {
-                htmlStr += `
-                <div class="bg-red-50 border border-red-200 text-red-900 p-4 rounded-lg text-sm mb-6 flex items-start gap-3">
-                    <span class="text-xl">⚠️</span>
-                    <p class="font-bold">${data.warning}</p>
-                </div>
-                `;
+            if (letter === 'A') {
+                htmlStr = `
+            <h2>Treino A</h2>
+            <p>Peito + Tríceps</p>
+        `;
             }
 
-            htmlStr += `<ul class="space-y-3">`;
-            data.exercises.forEach((ex) => {
-                htmlStr += `
-                    <li class="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-brand-200 transition-all">
-                        <div>
-                            <h4 class="font-bold text-slate-800">${ex.name}</h4>
-                            <p class="text-xs text-slate-500">${ex.detail}</p>
-                        </div>
-                        <div class="bg-white px-3 py-1 rounded-full border border-slate-200 text-brand-600 font-bold text-sm whitespace-nowrap">
-                            ${ex.sets}
-                        </div>
-                    </li>
-                `;
-            });
-            htmlStr += `</ul>`;
+            if (letter === 'B') {
+                htmlStr = `
+            <h2>Treino B</h2>
+            <p>Costas + Bíceps</p>
+        `;
+            }
 
+            if (letter === 'C') {
+                htmlStr = `
+            <h2>Treino C</h2>
+            <p>Pernas</p>
+        `;
+            }
+
+            if (letter === 'D') {
+                htmlStr = `
+            <h2>Treino D</h2>
+            <p>Ombro + Abdômen</p>
+        `;
+            }
+
+            // Atualiza conteúdo
             contentDiv.innerHTML = htmlStr;
+
+            // Animação (opcional)
+            contentDiv.classList.remove('fade-in');
+            void contentDiv.offsetWidth; // força reflow
             contentDiv.classList.add('fade-in');
+
+            // 📱 Scroll automático no mobile
+            if (window.innerWidth < 1024) {
+                setTimeout(() => {
+                    contentDiv.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 100);
+            }
         }
 
+
+        // ✅ Inicializa com Treino A (FORA da função!)
         showWorkout('A');
 
-        // --- 3. CHART.JS ---
-        Chart.defaults.font.family = "'Inter', sans-serif";
-        Chart.defaults.color = '#64748b';
+
+        // 📊 (OPCIONAL) CONFIG DO CHART.JS — FORA da função
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#64748b';
+        }
 
         // Weight Chart
         const weightCtx = document.getElementById('weightProjectionChart').getContext('2d');
