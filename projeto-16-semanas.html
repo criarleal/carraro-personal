@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Transformação Integral - 16 Semanas</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Chosen Palette: Warm Neutrals with Trust/Action Accents (Slate, Blue, Emerald, Amber) -->
+    <!-- Application Structure Plan: A single-page dashboard structure was chosen. This allows the patient to see their overarching goals immediately, interact with a daily checklist to build habits, and explore their workout, nutrition, and health pillars through tabbed and grid interfaces without feeling overwhelmed by a wall of text. The structure prioritizes action and daily usability. -->
+    <!-- Visualization & Content Choices: 
+         1. Weight Projection (Line Chart, Chart.js) -> Goal: Change/Motivate -> Shows expected progress over 16 weeks to manage expectations.
+         2. Macros Breakdown (Doughnut Chart, Chart.js) -> Goal: Inform -> Visually breaks down the 2000kcal diet into P/C/F proportions for better understanding.
+         3. Workout Tabs (JS/HTML/Tailwind) -> Goal: Organize -> Updated to include the full exercise list provided by the user.
+         4. Interactive Checklist (JS/HTML) -> Goal: Engage -> Encourages daily adherence to the protocol.
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Chart Container Requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Utilities */
+        .hide {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <span class="text-2xl">🚀</span>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Transformação<span
+                            class="text-brand-600">Integral</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#visao-geral"
+                        class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Visão
+                        Geral</a>
+                    <a href="#treino"
+                        class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Treinamento</a>
+                    <a href="#nutricao"
+                        class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Nutrição</a>
+                    <a href="#pilares"
+                        class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Saúde</a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <span class="text-2xl cursor-pointer"
+                        onclick="document.getElementById('mobile-menu').classList.toggle('hide')">☰</span>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hide md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2">
+            <a href="#visao-geral"
+                class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">Visão
+                Geral</a>
+            <a href="#treino"
+                class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">Treinamento</a>
+            <a href="#nutricao"
+                class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">Nutrição</a>
+            <a href="#pilares"
+                class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50">Saúde</a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- HEADER / HERO -->
+        <header
+            class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+            <div class="absolute -right-16 -top-16 text-[15rem] opacity-5 select-none pointer-events-none">🏆</div>
+            <div class="max-w-2xl relative z-10">
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-brand-100 text-brand-800 text-sm font-semibold tracking-wide mb-4">Projeto
+                    16 Semanas</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-4">
+                    Bem-vindo à sua <br /><span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-emerald-500">Reativação
+                        Metabólica</span>
+                </h1>
+                <p class="text-lg text-slate-600 mb-6">
+                    Este é o seu painel de controle interativo. Aqui organizamos seu objetivo principal: <strong>Perda
+                        de gordura, reativação metabólica e saúde hormonal.</strong>
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <div class="bg-slate-50 px-4 py-3 rounded-lg border border-slate-200">
+                        <span class="block text-xs text-slate-500 uppercase font-semibold">Fase 1 (0-8 sem)</span>
+                        <span class="font-bold text-slate-800">Construção de Rotina</span>
+                    </div>
+                    <div class="bg-slate-50 px-4 py-3 rounded-lg border border-slate-200">
+                        <span class="block text-xs text-slate-500 uppercase font-semibold">Fase 2 (8-16 sem)</span>
+                        <span class="font-bold text-slate-800">Aceleração Lipolítica</span>
+                    </div>
+                    <div class="bg-emerald-50 px-4 py-3 rounded-lg border border-emerald-200">
+                        <span class="block text-xs text-emerald-600 uppercase font-semibold">Meta Realista</span>
+                        <span class="font-bold text-emerald-800">-10kg a -15kg</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Checklist Widget -->
+            <div class="w-full md:w-80 bg-slate-800 rounded-xl p-6 shadow-lg text-white relative z-10">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><span>📈</span> Checklist Diário</h3>
+                <p class="text-sm text-slate-400 mb-4 pb-4 border-b border-slate-700">A consistência supera a
+                    intensidade. Marque ao concluir.</p>
+                <ul class="space-y-3" id="checklist">
+                    <li class="flex items-center gap-3 cursor-pointer group" onclick="toggleCheck(this)">
+                        <div
+                            class="w-5 h-5 rounded border-2 border-slate-500 flex items-center justify-center transition-colors group-hover:border-brand-400 check-box">
+                        </div>
+                        <span class="text-sm text-slate-300 transition-colors check-text">Bater meta de proteína
+                            (160g)</span>
+                    </li>
+                    <li class="flex items-center gap-3 cursor-pointer group" onclick="toggleCheck(this)">
+                        <div
+                            class="w-5 h-5 rounded border-2 border-slate-500 flex items-center justify-center transition-colors group-hover:border-brand-400 check-box">
+                        </div>
+                        <span class="text-sm text-slate-300 transition-colors check-text">Beber 3 litros de água</span>
+                    </li>
+                    <li class="flex items-center gap-3 cursor-pointer group" onclick="toggleCheck(this)">
+                        <div
+                            class="w-5 h-5 rounded border-2 border-slate-500 flex items-center justify-center transition-colors group-hover:border-brand-400 check-box">
+                        </div>
+                        <span class="text-sm text-slate-300 transition-colors check-text">Treino / Cardio do dia</span>
+                    </li>
+                    <li class="flex items-center gap-3 cursor-pointer group" onclick="toggleCheck(this)">
+                        <div
+                            class="w-5 h-5 rounded border-2 border-slate-500 flex items-center justify-center transition-colors group-hover:border-brand-400 check-box">
+                        </div>
+                        <span class="text-sm text-slate-300 transition-colors check-text">Dormir 7h a 8h</span>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- VISÃO GERAL SECTION -->
+        <section id="visao-geral" class="scroll-mt-24">
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-2"><span>📊</span> Projeção de
+                    Resultados</h2>
+                <p class="mt-2 text-slate-600 max-w-3xl">
+                    <strong>Sobre esta seção:</strong> O emagrecimento não é linear, mas ter uma projeção ajuda a
+                    alinhar expectativas. O gráfico abaixo simula um cenário realista de perda de peso seguro ao longo
+                    das 16 semanas.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="chart-container">
+                    <canvas id="weightProjectionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- TREINAMENTO SECTION -->
+        <section id="treino" class="scroll-mt-24">
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-2"><span>🏋️</span> Metodologia de
+                    Treino (Iniciante Inteligente)</h2>
+                <p class="mt-2 text-slate-600 max-w-3xl">
+                    <strong>Sobre esta seção:</strong> O foco aqui é segurança e base muscular. Máquinas são prioridade
+                    para reduzir riscos de lesão enquanto você ganha consciência corporal. <strong>Não treinou hoje?
+                        Segue de onde parou amanhã.</strong>
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Tabs and Cardio -->
+                <div class="lg:col-span-1 flex flex-col gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="p-4 bg-slate-50 border-b border-slate-200 font-bold text-slate-700">Selecione o
+                            Bloco</div>
+                        <div class="flex flex-col p-2 gap-1" id="workout-tabs">
+                            <button onclick="showWorkout('A')"
+                                class="w-full text-left px-4 py-3 rounded-lg font-medium text-brand-700 bg-brand-50 border border-brand-200 transition-all workout-tab"
+                                id="tab-A">A: Peito + Tríceps</button>
+                            <button onclick="showWorkout('B')"
+                                class="w-full text-left px-4 py-3 rounded-lg font-medium text-slate-600 hover:bg-slate-50 transition-all workout-tab"
+                                id="tab-B">B: Costas + Bíceps</button>
+                            <button onclick="showWorkout('C')"
+                                class="w-full text-left px-4 py-3 rounded-lg font-medium text-slate-600 hover:bg-slate-50 transition-all workout-tab"
+                                id="tab-C">C: Pernas (Atenção Joelho)</button>
+                            <button onclick="showWorkout('D')"
+                                class="w-full text-left px-4 py-3 rounded-lg font-medium text-slate-600 hover:bg-slate-50 transition-all workout-tab"
+                                id="tab-D">D: Ombro + Abdômen</button>
+                        </div>
+                    </div>
+
+                    <!-- Cardio Widget -->
+                    <div
+                        class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl shadow-sm border border-amber-200 p-6">
+                        <h3 class="font-bold text-amber-900 flex items-center gap-2 mb-3"><span>🫀</span> O Queimador de
+                            Gordura</h3>
+                        <p class="text-sm text-amber-800 mb-4">O cardio é essencial. Deve ser feito <strong>pós-treino
+                                ou em horário oposto</strong>.</p>
+                        <ul class="space-y-2 text-sm text-amber-900">
+                            <li class="flex items-start gap-2"><span>⏱️</span> <strong>Duração:</strong> 20 a 30
+                                minutos.</li>
+                            <li class="flex items-start gap-2"><span>🚶‍♂️</span> <strong>Ação:</strong> Esteira com
+                                inclinação leve.</li>
+                            <li class="flex items-start gap-2"><span>⚠️</span> <strong>Regra:</strong> Caminhada rápida,
+                                <strong>sem impacto</strong> (sem corrida agora).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Workout Display Area -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 min-h-[400px]">
+                        <div id="workout-content" class="fade-in">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NUTRIÇÃO SECTION (UPDATED) -->
+        <section id="nutricao" class="scroll-mt-24">
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-2"><span>🍽️</span> Dieta Prática
+                    (Batendo os Números)</h2>
+                <p class="mt-2 text-slate-600 max-w-3xl">Meta: ~2000 kcal | ~160g Proteína. Fácil, barato e eficiente.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+                <!-- Meal Plan Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="divide-y divide-slate-100">
+                            <!-- Ref 1 -->
+                            <div class="p-5 flex items-start gap-4">
+                                <div class="text-2xl mt-1">🥚</div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-bold text-slate-800 uppercase text-sm tracking-wide">Café da
+                                            Manhã</h4>
+                                        <span
+                                            class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">≈
+                                            400 kcal</span>
+                                    </div>
+                                    <p class="text-slate-600 mt-1">3 ovos + 50g aveia + café (sem açúcar).</p>
+                                    <p class="text-xs font-semibold text-brand-600 mt-1">25g proteína</p>
+                                </div>
+                            </div>
+                            <!-- Ref 2 -->
+                            <div class="p-5 flex items-start gap-4">
+                                <div class="text-2xl mt-1">🍗</div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-bold text-slate-800 uppercase text-sm tracking-wide">Almoço</h4>
+                                        <span
+                                            class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">≈
+                                            500 kcal</span>
+                                    </div>
+                                    <p class="text-slate-600 mt-1">150g frango + 120g arroz + legumes à vontade.</p>
+                                    <p class="text-xs font-semibold text-brand-600 mt-1">40g proteína</p>
+                                </div>
+                            </div>
+                            <!-- Ref 3 -->
+                            <div class="p-5 flex items-start gap-4">
+                                <div class="text-2xl mt-1">🥤</div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-bold text-slate-800 uppercase text-sm tracking-wide">Lanche</h4>
+                                        <span
+                                            class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">≈
+                                            300 kcal</span>
+                                    </div>
+                                    <p class="text-slate-600 mt-1">1 scoop whey + 1 banana + 30g aveia.</p>
+                                    <p class="text-xs font-semibold text-brand-600 mt-1">25g proteína</p>
+                                </div>
+                            </div>
+                            <!-- Ref 4 -->
+                            <div class="p-5 flex items-start gap-4">
+                                <div class="text-2xl mt-1">🍖</div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-bold text-slate-800 uppercase text-sm tracking-wide">Jantar</h4>
+                                        <span
+                                            class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">≈
+                                            450 kcal</span>
+                                    </div>
+                                    <p class="text-slate-600 mt-1">150g carne OU frango + 100g arroz.</p>
+                                    <p class="text-xs font-semibold text-brand-600 mt-1">35g proteína</p>
+                                </div>
+                            </div>
+                            <!-- Ref 5 -->
+                            <div class="p-5 flex items-start gap-4 bg-brand-50/30">
+                                <div class="text-2xl mt-1">🍳</div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-bold text-slate-800 uppercase text-sm tracking-wide">Ceia <span
+                                                class="text-[10px] text-brand-600">(Crítico)</span></h4>
+                                        <span
+                                            class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">≈
+                                            300 kcal</span>
+                                    </div>
+                                    <p class="text-slate-600 mt-1">2 ovos OU iogurte + whey.</p>
+                                    <p class="text-xs font-semibold text-brand-600 mt-1">30–35g proteína</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Strategy Box -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h3 class="font-bold text-slate-900 mb-4 flex items-center gap-2">⚠️ Ajustes Inteligentes
+                            </h3>
+                            <ul class="text-sm space-y-3 text-slate-600">
+                                <li><strong>Muita fome?</strong> Aumente legumes e proteína (nunca o carbo).</li>
+                                <li><strong>Peso estagnado (2 sem)?</strong> Corte 150 kcal (do carbo).</li>
+                                <li><strong>Muito cansado?</strong> Sobe carbo no pré-treino.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900 p-6 rounded-2xl text-white">
+                            <h3 class="font-bold mb-4 flex items-center gap-2">🧠 Estratégia Oculta</h3>
+                            <p class="text-sm text-slate-300 mb-3">Garanta:</p>
+                            <ul class="text-sm space-y-2">
+                                <li class="flex items-center gap-2"><span class="text-emerald-400">✔</span> Proteína
+                                    batida TODO DIA.</li>
+                                <li class="flex items-center gap-2"><span class="text-emerald-400">✔</span> Calorias
+                                    controladas na maioria.</li>
+                                <li class="flex items-center gap-2"><span class="text-amber-400">🍔</span> 1-2 refeições
+                                    livres por semana.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Column -->
+                <div class="space-y-6">
+                    <div class="bg-emerald-600 p-6 rounded-2xl text-white shadow-lg">
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2">🔥 Resumo do Dia</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between border-b border-white/20 pb-2">
+                                <span>Energia</span>
+                                <span class="font-bold">~2000 kcal</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/20 pb-2">
+                                <span>Proteína</span>
+                                <span class="font-bold">~160g</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/20 pb-2">
+                                <span>Custo</span>
+                                <span class="font-bold">Barato</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/20 pb-2">
+                                <span>Preparo</span>
+                                <span class="font-bold">Prático</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-brand-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-2 text-3xl opacity-20">💣</div>
+                        <h3 class="font-bold text-slate-900 mb-2">Verdade Direta</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Se você seguir as <strong>2000 kcal + 160g de proteína</strong> e o treino, você vai
+                            emagrecer rápido mesmo com a testosterona bagunçada. A base hormonal se cura com a perda de
+                            gordura.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PILARES DA SAÚDE E SUPLEMENTAÇÃO SECTION -->
+        <section id="pilares" class="scroll-mt-24 pb-16">
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-2"><span>🧬</span>
+                    Pilares de Saúde
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Supplements -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-4">
+                        <span>💊</span>
+                        Suplementação Base
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 bg-slate-50 p-3 rounded-lg">
+                            <span class="text-xl">⚡</span>
+                            <div>
+                                <strong class="text-slate-800 block">Creatina (5g/dia)</strong>
+                                <span class="text-sm text-slate-600">Essencial para força e recuperação.
+                                    Todos os
+                                    dias.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-slate-50 p-3 rounded-lg">
+                            <span class="text-xl">🥛</span>
+                            <div>
+                                <strong class="text-slate-800 block">Whey Protein</strong>
+                                <span class="text-sm text-slate-600">Praticidade para bater a meta de
+                                    proteínas.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Hormones & Sleep -->
+                <div class="space-y-6">
+                    <div class="bg-red-50 p-6 rounded-2xl shadow-sm border border-red-200">
+                        <h3 class="text-xl font-bold text-red-900 flex items-center gap-2 mb-2">
+                            <span>🩸</span> Alerta
+                            Hormonal
+                        </h3>
+                        <p class="text-sm text-red-800">
+                            Foco na regulação natural perdendo peso e dormindo melhor. <strong>Disfunção e
+                                baixa energia
+                                são sintomas de inflamação.</strong>
+                        </p>
+                    </div>
+
+                    <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm border border-indigo-200">
+                        <h3 class="text-xl font-bold text-indigo-900 flex items-center gap-2 mb-2">
+                            <span>😴</span> Sono
+                        </h3>
+                        <p class="text-sm text-indigo-800">
+                            🎯 Meta: 7h a 8h de qualidade. Sem sono, não há queima de gordura eficiente.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- App Logic & Visualizations -->
+    <script>
+        // --- 1. INTERACTIVE CHECKLIST LOGIC ---
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('.check-box');
+            const text = element.querySelector('.check-text');
+
+            if (checkbox.innerHTML === '') {
+                checkbox.innerHTML = '✓';
+                checkbox.classList.replace('border-slate-500', 'border-emerald-500');
+                checkbox.classList.add('bg-emerald-500', 'text-white');
+                text.classList.add('line-through', 'text-slate-500');
+                text.classList.remove('text-slate-300');
+            } else {
+                checkbox.innerHTML = '';
+                checkbox.classList.replace('border-emerald-500', 'border-slate-500');
+                checkbox.classList.remove('bg-emerald-500', 'text-white');
+                text.classList.remove('line-through', 'text-slate-500');
+                text.classList.add('text-slate-300');
+            }
+        }
+
+        // --- 2. WORKOUT TABS LOGIC (Updated with full list) ---
+        const workoutsData = {
+            'A': {
+                title: "Treino A: Peito + Tríceps",
+                color: "brand",
+                icon: "💪",
+                why: "Máquinas dão segurança + menos risco de lesão agora",
+                exercises: [
+                    { name: "Supino máquina", sets: "3x10–12", detail: "Foco no controle." },
+                    { name: "Supino halter", sets: "3x10", detail: "Estabilização do ombro." },
+                    { name: "Peck deck", sets: "3x12", detail: "Contração máxima no centro." },
+                    { name: "Tríceps corda", sets: "3x12", detail: "Extensão completa." },
+                    { name: "Tríceps banco", sets: "2x até falhar", detail: "Peso do corpo." }
+                ]
+            },
+            'B': {
+                title: "Treino B: Costas + Bíceps",
+                color: "slate",
+                icon: "🦍",
+                why: "Postura + base muscular",
+                exercises: [
+                    { name: "Puxada frente", sets: "3x10", detail: "Ativação de dorsais." },
+                    { name: "Remada máquina", sets: "3x10", detail: "Postura reta." },
+                    { name: "Remada baixa", sets: "3x12", detail: "Cotovelos rente ao corpo." },
+                    { name: "Rosca direta", sets: "3x10", detail: "Barra ou halteres." },
+                    { name: "Rosca alternada", sets: "2x12", detail: "Controle na descida." }
+                ]
+            },
+            'C': {
+                title: "Treino C: PERNA (Foco Joelho)",
+                color: "amber",
+                icon: "🦵",
+                why: "Seu joelho avisou que não aguenta impacto + carga errada agora",
+                warning: "🚫 EVITAR: Agachamento livre pesado e Corrida.",
+                exercises: [
+                    { name: "Leg press (leve/moderado)", sets: "3x12", detail: "Sem travar o joelho." },
+                    { name: "Cadeira extensora (leve)", sets: "3x12", detail: "Foco no quadríceps." },
+                    { name: "Mesa flexora", sets: "3x12", detail: "Posteriores de coxa." },
+                    { name: "Glúteo máquina", sets: "3x12", detail: "Fortalecimento de quadril." },
+                    { name: "Panturrilha", sets: "4x15", detail: "Importante para circulação." }
+                ]
+            },
+            'D': {
+                title: "Treino D: Ombro + Abdômen",
+                color: "slate",
+                icon: "🛡️",
+                why: "Fortalecimento do core e estabilidade",
+                exercises: [
+                    { name: "Elevação lateral", sets: "3x12", detail: "Ombros largos." },
+                    { name: "Desenvolvimento máquina", sets: "3x10", detail: "Segurança articular." },
+                    { name: "Elevação frontal", sets: "2x12", detail: "Porção anterior." },
+                    { name: "Abdominal máquina", sets: "3x15", detail: "Core ativado." },
+                    { name: "Prancha", sets: "3x (30–60s)", detail: "Isometria total." }
+                ]
+            }
+        };
+
+        function showWorkout(dayId) {
+            document.querySelectorAll('.workout-tab').forEach(tab => {
+                tab.className = "w-full text-left px-4 py-3 rounded-lg font-medium text-slate-600 hover:bg-slate-50 transition-all workout-tab";
+            });
+            const activeTab = document.getElementById(`tab-${dayId}`);
+            activeTab.className = "w-full text-left px-4 py-3 rounded-lg font-medium text-brand-700 bg-brand-50 border border-brand-200 transition-all workout-tab";
+
+            const data = workoutsData[dayId];
+            const contentDiv = document.getElementById('workout-content');
+
+            contentDiv.classList.remove('fade-in');
+            void contentDiv.offsetWidth;
+
+            let htmlStr = `
+                <div class="mb-6 pb-4 border-b border-slate-100">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="text-3xl">${data.icon}</span>
+                        <h3 class="text-2xl font-bold text-slate-800">${data.title}</h3>
+                    </div>
+                    <p class="text-sm font-medium text-brand-600 italic">👉 Por quê: ${data.why}</p>
+                </div>
+            `;
+
+            if (data.warning) {
+                htmlStr += `
+                <div class="bg-red-50 border border-red-200 text-red-900 p-4 rounded-lg text-sm mb-6 flex items-start gap-3">
+                    <span class="text-xl">⚠️</span>
+                    <p class="font-bold">${data.warning}</p>
+                </div>
+                `;
+            }
+
+            htmlStr += `<ul class="space-y-3">`;
+            data.exercises.forEach((ex) => {
+                htmlStr += `
+                    <li class="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-brand-200 transition-all">
+                        <div>
+                            <h4 class="font-bold text-slate-800">${ex.name}</h4>
+                            <p class="text-xs text-slate-500">${ex.detail}</p>
+                        </div>
+                        <div class="bg-white px-3 py-1 rounded-full border border-slate-200 text-brand-600 font-bold text-sm whitespace-nowrap">
+                            ${ex.sets}
+                        </div>
+                    </li>
+                `;
+            });
+            htmlStr += `</ul>`;
+
+            contentDiv.innerHTML = htmlStr;
+            contentDiv.classList.add('fade-in');
+        }
+
+        showWorkout('A');
+
+        // --- 3. CHART.JS ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        // Weight Chart
+        const weightCtx = document.getElementById('weightProjectionChart').getContext('2d');
+        new Chart(weightCtx, {
+            type: 'line',
+            data: {
+                labels: ['Início', 'Semana 4', 'Semana 8', 'Semana 12', 'Semana 16'],
+                datasets: [{
+                    label: 'Peso Projetado (kg)',
+                    data: [100, 95.5, 91.5, 88.0, 85.0],
+                    borderColor: '#0ea5e9',
+                    backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#0ea5e9',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { min: 80, max: 105, grid: { borderDash: [5, 5] } }
+                }
+            }
+        });
+
+        // Macros Chart
+        const macroCtx = document.getElementById('macroChart').getContext('2d');
+        new Chart(macroCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Proteína', 'Carbo', 'Gordura'],
+                datasets: [{
+                    data: [640, 800, 540],
+                    backgroundColor: ['#0284c7', '#10b981', '#f59e0b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
