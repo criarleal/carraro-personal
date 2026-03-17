@@ -601,46 +601,62 @@
         };
 
         function showWorkout(letter) {
-            const contentDiv = document.getElementById('treino');
-            let htmlStr = '';
+            const contentDiv = document.getElementById('workout-content');
+            const data = workoutsData[letter];
 
-            if (letter === 'A') {
-                htmlStr = `
-            <h2>Treino A</h2>
-            <p>Peito + Tríceps</p>
+            if (!data) return;
+
+            // Atualiza abas (ativo)
+            document.querySelectorAll('.workout-tab').forEach(tab => {
+                tab.classList.remove('bg-brand-50', 'border', 'border-brand-200', 'text-brand-700');
+                tab.classList.add('text-slate-600');
+            });
+
+            const activeTab = document.getElementById(`tab-${letter}`);
+            activeTab.classList.add('bg-brand-50', 'border', 'border-brand-200', 'text-brand-700');
+
+            // Monta HTML
+            let htmlStr = `
+        <div class="space-y-6">
+            <div>
+                <h3 class="text-2xl font-bold">${data.icon} ${data.title}</h3>
+                <p class="text-sm text-slate-500 mt-1">${data.why}</p>
+            </div>
+    `;
+
+            if (data.warning) {
+                htmlStr += `
+            <div class="bg-red-50 border border-red-200 p-3 rounded-lg text-sm text-red-700">
+                ${data.warning}
+            </div>
         `;
             }
 
-            if (letter === 'B') {
-                htmlStr = `
-            <h2>Treino B</h2>
-            <p>Costas + Bíceps</p>
-        `;
-            }
+            htmlStr += `<div class="space-y-3">`;
 
-            if (letter === 'C') {
-                htmlStr = `
-            <h2>Treino C</h2>
-            <p>Pernas</p>
+            data.exercises.forEach(ex => {
+                htmlStr += `
+            <div class="flex justify-between items-center bg-slate-50 p-4 rounded-lg">
+                <div>
+                    <strong>${ex.name}</strong>
+                    <p class="text-xs text-slate-500">${ex.detail}</p>
+                </div>
+                <span class="text-sm font-bold text-brand-600">${ex.sets}</span>
+            </div>
         `;
-            }
+            });
 
-            if (letter === 'D') {
-                htmlStr = `
-            <h2>Treino D</h2>
-            <p>Ombro + Abdômen</p>
-        `;
-            }
+            htmlStr += `</div></div>`;
 
-            // Atualiza conteúdo
+            // Injeta conteúdo
             contentDiv.innerHTML = htmlStr;
 
-            // Animação (opcional)
+            // Animação
             contentDiv.classList.remove('fade-in');
-            void contentDiv.offsetWidth; // força reflow
+            void contentDiv.offsetWidth;
             contentDiv.classList.add('fade-in');
 
-            // 📱 Scroll automático no mobile
+            // 📱 Scroll mobile
             if (window.innerWidth < 1024) {
                 setTimeout(() => {
                     contentDiv.scrollIntoView({
@@ -649,17 +665,6 @@
                     });
                 }, 100);
             }
-        }
-
-
-        // ✅ Inicializa com Treino A (FORA da função!)
-        showWorkout('A');
-
-
-        // 📊 (OPCIONAL) CONFIG DO CHART.JS — FORA da função
-        if (typeof Chart !== 'undefined') {
-            Chart.defaults.font.family = "'Inter', sans-serif";
-            Chart.defaults.color = '#64748b';
         }
 
         // Weight Chart
