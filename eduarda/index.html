@@ -1,81 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planejamento de Treino ABC</title>
 <link rel="icon" href="https://lucianocarraro.com.br/wp-content/uploads/2021/02/cropped-Fav-Icon-Luciano-192x192.png" sizes="192x192">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f4f6f9; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 
-  .wrap { font-family: 'DM Sans', sans-serif; max-width: 860px; margin: 0 auto; padding: 0 0 2rem; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 0 2.5rem; }
 
-  .header { background: #1a3a5c; color: white; padding: 2rem 2rem 1.5rem; border-radius: 0 0 20px 20px; margin-bottom: 1.5rem; }
-  .header-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 6px; font-weight: 400; }
-  .header-title { font-family: 'DM Serif Display', serif; font-size: 30px; font-weight: 400; line-height: 1.2; color: #fff; }
+  .header {
+    background: #1a3a5c;
+    color: white;
+    padding: 2rem 2rem 1.5rem;
+    border-radius: 0 0 24px 24px;
+    margin-bottom: 1.5rem;
+  }
+  .header-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 6px; }
+  .header-title { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; line-height: 1.2; }
   .header-title span { color: #7eb8e0; }
-  .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-  .aluna-field { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; padding: 10px 16px; min-width: 200px; }
-  .aluna-field label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.45); display: block; margin-bottom: 4px; }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+  .aluna-field { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; padding: 10px 16px; min-width: 210px; }
+  .aluna-field label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.4); display: block; margin-bottom: 4px; }
   .aluna-field input { background: transparent; border: none; outline: none; color: white; font-size: 15px; font-family: 'DM Sans', sans-serif; width: 100%; }
   .aluna-field input::placeholder { color: rgba(255,255,255,0.3); }
-  .tip-bar { margin-top: 1.2rem; background: rgba(126,184,224,0.12); border-left: 3px solid #7eb8e0; border-radius: 0 8px 8px 0; padding: 8px 14px; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
-  .dots { display: flex; gap: 6px; }
+  .tip-bar { margin-top: 1.2rem; background: rgba(126,184,224,0.12); border-left: 3px solid #7eb8e0; border-radius: 0 8px 8px 0; padding: 8px 14px; font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.5; }
+  .dots { display: flex; gap: 6px; margin-top: 8px; }
   .dot { width: 7px; height: 7px; border-radius: 50%; }
-  .dot-1 { background: rgba(255,255,255,0.3); }
+  .dot-1 { background: rgba(255,255,255,0.25); }
   .dot-2 { background: #7eb8e0; }
   .dot-3 { background: #4caf7d; }
 
-  .section { margin: 0 1rem 1.5rem; background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 16px; overflow: hidden; }
-  .section-header { display: flex; align-items: center; gap: 14px; padding: 1rem 1.4rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .section { margin: 0 1rem 1.4rem; background: #fff; border: 1px solid #e5e9ef; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+  .section-header { display: flex; align-items: center; gap: 14px; padding: 1rem 1.4rem; border-bottom: 1px solid #e5e9ef; background: #fff; }
   .section-badge { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 18px; flex-shrink: 0; color: white; }
   .badge-a { background: #1a3a5c; }
   .badge-b { background: #2d6a9f; }
   .badge-c { background: #1a6b52; }
-  .section-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
-  .section-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+  .section-title { font-size: 15px; font-weight: 500; color: #1a1a2e; }
+  .section-sub { font-size: 12px; color: #6b7280; margin-top: 2px; }
 
   /* Desktop table */
-  .dt { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .dt thead tr { background: var(--color-background-secondary); }
-  .dt th { text-align: left; padding: 9px 14px; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 500; color: var(--color-text-secondary); border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .dt th:not(:first-child), .dt td:not(:first-child) { text-align: center; }
-  .dt td { padding: 10px 14px; color: var(--color-text-primary); border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: middle; }
-  .dt tr:last-child td { border-bottom: none; }
-  .dt tr:hover td { background: var(--color-background-secondary); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: #f8fafc; }
+  th { text-align: left; padding: 9px 14px; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 500; color: #6b7280; border-bottom: 1px solid #e5e9ef; }
+  th:not(:first-child), td:not(:first-child) { text-align: center; }
+  td { padding: 10px 14px; color: #1a1a2e; border-bottom: 1px solid #f0f2f5; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
   .ex-name { font-weight: 500; }
-  .cardio-row td { background: var(--color-background-secondary); font-style: italic; color: var(--color-text-secondary); }
+  .cardio-row td { background: #f8fafc; font-style: italic; color: #6b7280; }
+
   .tag { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
-  .tag-load { background: rgba(26,58,92,0.08); color: #1a3a5c; }
+  .tag-load { background: rgba(26,58,92,0.07); color: #1a3a5c; }
   .tag-rest { background: rgba(22,107,82,0.07); color: #1a6b52; }
 
-  /* Mobile cards */
-  .ex-card { padding: 14px 16px; border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .ex-card:last-child { border-bottom: none; }
-  .ex-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
-  .ex-card-name { font-size: 15px; font-weight: 500; color: var(--color-text-primary); line-height: 1.3; }
-  .ex-card-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .meta-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
-  .meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.65; }
-  .pill-series { background: rgba(126,184,224,0.12); color: #1a3a5c; }
-  .pill-reps   { background: rgba(126,184,224,0.12); color: #1a3a5c; }
-  .pill-load   { background: rgba(26,58,92,0.08);   color: #1a3a5c; }
-  .pill-rest   { background: rgba(22,107,82,0.07);  color: #1a6b52; }
-  .cardio-card { padding: 12px 16px; background: var(--color-background-secondary); display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; font-style: italic; color: var(--color-text-secondary); }
-
-  .video-btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 13px; border-radius: 20px; font-size: 12px; font-weight: 500; text-decoration: none; background: rgba(45,106,159,0.1); color: #2d6a9f; border: 0.5px solid rgba(45,106,159,0.25); white-space: nowrap; flex-shrink: 0; }
+  .video-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; text-decoration: none; background: rgba(45,106,159,0.08); color: #2d6a9f; border: 1px solid rgba(45,106,159,0.2); white-space: nowrap; transition: background 0.15s; }
+  .video-btn:hover { background: rgba(45,106,159,0.16); }
   .video-icon { width: 0; height: 0; border-left: 8px solid #2d6a9f; border-top: 4px solid transparent; border-bottom: 4px solid transparent; display: inline-block; }
 
-  .footer-note { text-align: center; font-size: 12px; color: var(--color-text-secondary); margin-top: 1.5rem; padding: 0 1.2rem; line-height: 1.6; }
+  /* Mobile cards - hidden on desktop */
+  .mobile-list { display: none; }
 
-  /* JS-controlled classes */
-  .is-mobile .header { padding: 1.4rem 1.2rem 1.2rem; border-radius: 0 0 16px 16px; }
-  .is-mobile .header-title { font-size: 22px; }
-  .is-mobile .header-top { flex-direction: column; gap: 10px; }
-  .is-mobile .aluna-field { min-width: unset; width: 100%; }
-  .is-mobile .section { margin: 0 0.5rem 1.2rem; }
-  .is-mobile .show-desktop { display: none !important; }
-  .is-mobile .show-mobile { display: block !important; }
-  .show-mobile { display: none; }
-  .show-desktop { display: table; width: 100%; }
+  .ex-card { padding: 14px 16px; border-bottom: 1px solid #f0f2f5; }
+  .ex-card:last-child { border-bottom: none; }
+  .ex-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+  .ex-card-name { font-size: 15px; font-weight: 500; color: #1a1a2e; line-height: 1.3; }
+  .ex-card-meta { display: flex; flex-wrap: wrap; gap: 7px; }
+  .meta-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+  .meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.6; }
+  .pill-series, .pill-reps { background: rgba(126,184,224,0.15); color: #1a3a5c; }
+  .pill-load { background: rgba(26,58,92,0.07); color: #1a3a5c; }
+  .pill-rest { background: rgba(22,107,82,0.08); color: #1a6b52; }
+  .cardio-card { padding: 12px 16px; background: #f8fafc; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #6b7280; font-style: italic; }
+
+  .footer-note { text-align: center; font-size: 12px; color: #9ca3af; margin-top: 1.5rem; padding: 0 1.2rem; line-height: 1.6; }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    body { background: #f0f2f5; }
+    .header { padding: 1.4rem 1.2rem 1.2rem; border-radius: 0 0 18px 18px; margin-bottom: 1.2rem; }
+    .header-title { font-size: 24px; }
+    .header-top { flex-direction: column; gap: 12px; }
+    .aluna-field { min-width: unset; width: 100%; }
+    .tip-bar { font-size: 12px; }
+    .section { margin: 0 0.75rem 1.1rem; border-radius: 14px; }
+    .section-header { padding: 0.9rem 1rem; }
+    table { display: none; }
+    .mobile-list { display: block; }
+    .footer-note { font-size: 13px; padding: 0 1rem; }
+  }
 </style>
-
-<div class="wrap" id="wrap">
+</head>
+<body>
+<div class="wrap">
 
   <div class="header">
     <div class="header-top">
@@ -83,12 +104,15 @@
         <div class="header-label">Programa de Musculação</div>
         <div class="header-title">Planejamento de<br><span>Treino ABC</span></div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px;width:100%">
-        <div class="aluna-field"><label>Aluna</label><input type="text" placeholder="Seu nome aqui"></div>
+      <div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:240px;">
+        <div class="aluna-field">
+          <label>Aluna</label>
+          <input type="text" placeholder="Seu nome aqui">
+        </div>
         <div class="dots"><div class="dot dot-1"></div><div class="dot dot-2"></div><div class="dot dot-3"></div></div>
       </div>
     </div>
-    <div class="tip-bar">Toque no botão <strong style="color:#7eb8e0;">Vídeo</strong> para ver exemplos de técnica de execução.</div>
+    <div class="tip-bar">Toque no botão <strong style="color:#7eb8e0;">Vídeo</strong> para ver exemplos de técnica de execução de cada exercício.</div>
   </div>
 
   <!-- TREINO A -->
@@ -97,7 +121,7 @@
       <div class="section-badge badge-a">A</div>
       <div><div class="section-title">Treino A</div><div class="section-sub">Pernas · Peito · Costas · Ombro</div></div>
     </div>
-    <table class="dt show-desktop">
+    <table>
       <thead><tr><th>Exercício</th><th>Séries</th><th>Reps</th><th>Carga</th><th>Descanso</th><th>Link</th></tr></thead>
       <tbody>
         <tr><td class="ex-name">Agachamento Smith</td><td>3</td><td>12–15</td><td><span class="tag tag-load">5 kg</span></td><td><span class="tag tag-rest">45s</span></td><td><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+agachamento+smith+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></td></tr>
@@ -109,7 +133,7 @@
         <tr class="cardio-row"><td>Cardio — Bike ou Esteira</td><td>—</td><td>15 min</td><td>Moder.</td><td>—</td><td>—</td></tr>
       </tbody>
     </table>
-    <div class="show-mobile">
+    <div class="mobile-list">
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Agachamento Smith</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+agachamento+smith+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;12–15</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;5 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Supino Máquina</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+supino+maquina+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;8–12</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;15 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Flexor Sentado</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+cadeira+flexora+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;12–15</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;20 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
@@ -126,7 +150,7 @@
       <div class="section-badge badge-b">B</div>
       <div><div class="section-title">Treino B</div><div class="section-sub">Pernas · Costas · Peito · Ombro</div></div>
     </div>
-    <table class="dt show-desktop">
+    <table>
       <thead><tr><th>Exercício</th><th>Séries</th><th>Reps</th><th>Carga</th><th>Descanso</th><th>Link</th></tr></thead>
       <tbody>
         <tr><td class="ex-name">Leg Press 45</td><td>3</td><td>12–15</td><td><span class="tag tag-load">40 kg</span></td><td><span class="tag tag-rest">45s</span></td><td><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+leg+press+45+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></td></tr>
@@ -138,7 +162,7 @@
         <tr class="cardio-row"><td>Cardio — Bike ou Esteira</td><td>—</td><td>15 min</td><td>Moder.</td><td>—</td><td>—</td></tr>
       </tbody>
     </table>
-    <div class="show-mobile">
+    <div class="mobile-list">
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Leg Press 45</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+leg+press+45+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;12–15</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;40 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Remada Baixa</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+remada+baixa+triangulo+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;8–12</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;20 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Cadeira Extensora</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+cadeira+extensora+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;12–15</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;20 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
@@ -155,7 +179,7 @@
       <div class="section-badge badge-c">C</div>
       <div><div class="section-title">Treino C</div><div class="section-sub">Pernas · Tronco · Braços</div></div>
     </div>
-    <table class="dt show-desktop">
+    <table>
       <thead><tr><th>Exercício</th><th>Séries</th><th>Reps</th><th>Carga</th><th>Descanso</th><th>Link</th></tr></thead>
       <tbody>
         <tr><td class="ex-name">Cadeira Abdutora</td><td>3</td><td>12–15</td><td><span class="tag tag-load">20 kg</span></td><td><span class="tag tag-rest">45s</span></td><td><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+cadeira+abdutora+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></td></tr>
@@ -167,7 +191,7 @@
         <tr class="cardio-row"><td>Cardio — Bike ou Esteira</td><td>—</td><td>15 min</td><td>Moder.</td><td>—</td><td>—</td></tr>
       </tbody>
     </table>
-    <div class="show-mobile">
+    <div class="mobile-list">
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Cadeira Abdutora</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+cadeira+abdutora+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;12–15</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;20 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Crucifixo Máquina</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+crucifixo+maquina+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;8–12</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;15 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
       <div class="ex-card"><div class="ex-card-top"><div class="ex-card-name">Stiff</div><a class="video-btn" href="https://www.youtube.com/results?search_query=execução+stiff+feminino" target="_blank"><span class="video-icon"></span> Vídeo</a></div><div class="ex-card-meta"><span class="meta-pill pill-series"><span class="meta-label">Séries</span>&nbsp;3</span><span class="meta-pill pill-reps"><span class="meta-label">Reps</span>&nbsp;12–15</span><span class="meta-pill pill-load"><span class="meta-label">Carga</span>&nbsp;5 kg</span><span class="meta-pill pill-rest"><span class="meta-label">Desc.</span>&nbsp;45s</span></div></div>
@@ -180,17 +204,5 @@
 
   <div class="footer-note">Respeite o tempo de descanso de 45 segundos entre as séries para manter a intensidade do treino.</div>
 </div>
-
-<script>
-  function applyLayout() {
-    var w = document.getElementById('wrap');
-    var width = w.offsetWidth;
-    if (width < 560) {
-      w.classList.add('is-mobile');
-    } else {
-      w.classList.remove('is-mobile');
-    }
-  }
-  applyLayout();
-  window.addEventListener('resize', applyLayout);
-</script>
+</body>
+</html>
